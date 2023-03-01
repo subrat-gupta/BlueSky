@@ -49,16 +49,6 @@ public class ServiceProviderImpl implements ServiceProviderService{
 		return spRepo.findBySpEmailAndSpPassword(sp1.getSpEmail(),sp1.getSpPassword()).orElseThrow(()-> new ResourceNotFoundException("Bad Credentials!!!"));
 	}
 	
-//	public Map<String,Object>assignCategoryid(String name,CategoryDto catdto){
-//		Category category= catRepo.findByCatName(name);
-//		category.getId();
-//		
-//		
-//		
-//		
-//		return null;
-//	}
-
 	@Override
 	public void addCategoryToServiceProvider(Long serviceProviderId, Long categoryId) {
         ServiceProvider serviceProvider = spRepo.findById(serviceProviderId)
