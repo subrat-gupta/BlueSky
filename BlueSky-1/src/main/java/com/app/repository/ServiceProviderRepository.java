@@ -8,7 +8,7 @@ import com.app.pojos.ServiceProvider;
 
 public interface ServiceProviderRepository extends JpaRepository<ServiceProvider, Long> {
 
-	Optional<ServiceProvider> findBySpEmailAndSpPassword(String em,String pass);
+	Optional<ServiceProvider> findBySpEmail(String em);
 	
 	
 

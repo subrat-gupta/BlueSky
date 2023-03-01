@@ -9,9 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,14 +31,13 @@ public class Customer extends BaseEntity {
 	private String custLastName;
 	@Column(length = 50, unique = true)
 	private String custEmail;
-	@Column(length = 20, nullable = false)
+	@Column(length = 200, nullable = false)
 	//@JsonProperty(access = Access.WRITE_ONLY)
 	private String custPassword;
 	private String custAddress;
 	@Column(length = 10, unique = true)
 	private Long custMobNumber;
 	
-	@JsonManagedReference
 	@OneToMany(mappedBy = "custdetail",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
 	private List<Booking>bookings=new ArrayList<>();
 

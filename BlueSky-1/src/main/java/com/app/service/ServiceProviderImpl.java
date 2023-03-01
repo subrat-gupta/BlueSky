@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.app.custom_exception.ResourceNotFoundException;
@@ -28,6 +29,9 @@ public class ServiceProviderImpl implements ServiceProviderService{
 	private CategoryRepository catRepo;
 	
 	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private ModelMapper mapper;
 	
 	@PostConstruct
@@ -38,17 +42,36 @@ public class ServiceProviderImpl implements ServiceProviderService{
 	@Override
 	public ServiceProvider addProviderDetails(SpRegistrationDto transientServiceProviderdto) {
 		
-		ServiceProvider sp= mapper.map(transientServiceProviderdto, ServiceProvider.class);
+		String encPassword = passwordEncoder.encode(transientServiceProviderdto.getSpPassword());
+		transientServiceProviderdto.setSpPassword(encPassword);
 		
+		ServiceProvider sp= mapper.map(transientServiceProviderdto, ServiceProvider.class);
 		return spRepo.save(sp);
 	}
 
 	@Override
 	public ServiceProvider authenticateSp(SpLoginDto logindto) {
-		ServiceProvider sp1= mapper.map(logindto, ServiceProvider.class);
-		return spRepo.findBySpEmailAndSpPassword(sp1.getSpEmail(),sp1.getSpPassword()).orElseThrow(()-> new ResourceNotFoundException("Bad Credentials!!!"));
+		
+		ServiceProvider sp1=spRepo.findBySpEmail(logindto.getSpEmail())
+				.orElseThrow(()-> new ResourceNotFoundException("Bad Credentials!!!"));
+		
+		String rawPassword=logindto.getSpPassword();
+		if(sp1!=null && passwordEncoder.matches(rawPassword, sp1.getSpPassword()))
+		return sp1;
+		else throw new ResourceNotFoundException("Wrong Email or Password");
+		//return spRepo.findBySpEmailAndSpPassword(sp1.getSpEmail(),sp1.getSpPassword()).orElseThrow(()-> new ResourceNotFoundException("Bad Credentials!!!"));
 	}
 	
+//	public Map<String,Object>assignCategoryid(String name,CategoryDto catdto){
+//		Category category= catRepo.findByCatName(name);
+//		category.getId();
+//		
+//		
+//		
+//		
+//		return null;
+//	}
+
 	@Override
 	public void addCategoryToServiceProvider(Long serviceProviderId, Long categoryId) {
         ServiceProvider serviceProvider = spRepo.findById(serviceProviderId)

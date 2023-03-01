@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.app.custom_exception.ResourceNotFoundException;
@@ -40,6 +41,9 @@ public class CustomerImpl implements CustomerService{
 	private BookingRepository bookingRepo;
 	
 	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private ModelMapper mapper;
 	
 	@PostConstruct
@@ -50,15 +54,24 @@ public class CustomerImpl implements CustomerService{
 	@Override
 	public Customer addCustomerDetails(CustomerRegistrationDto transientCustomerdto) {
 		
-		Customer cx= mapper.map(transientCustomerdto, Customer.class);
+		String encPassword = passwordEncoder.encode(transientCustomerdto.getCustPassword());
+		transientCustomerdto.setCustPassword(encPassword);
 		
+		Customer cx= mapper.map(transientCustomerdto, Customer.class);
 		return custRepo.save(cx);
 	}
 
 	@Override
 	public Customer authenticateCust(CustomerLoginDto logindto) {
-		Customer cx1= mapper.map(logindto, Customer.class);
-		return custRepo.findByCustEmailAndCustPassword(cx1.getCustEmail(),cx1.getCustPassword()).orElseThrow(()-> new ResourceNotFoundException("Bad Credentials!!!"));
+		Customer cx1= custRepo.findByCustEmail(logindto.getCustEmail())
+				.orElseThrow(()-> new ResourceNotFoundException("Bad Credentials!!!"));
+		
+		
+		String rawPassword=logindto.getCustPassword();
+		if(cx1!=null && passwordEncoder.matches(rawPassword, cx1.getCustPassword()))
+				return cx1;
+		else throw new ResourceNotFoundException("Wrong Email or Password");
+
 	}
 
 	@Override

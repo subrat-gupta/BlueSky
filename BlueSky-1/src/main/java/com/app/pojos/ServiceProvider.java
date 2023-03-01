@@ -38,7 +38,7 @@ public class ServiceProvider extends BaseEntity {
 	private String spLastname;
 	@Column(length = 50)
 	private String spEmail;
-	@Column(length = 20, nullable = false)
+	@Column(length = 100 , nullable = false)
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String spPassword;
 	private String spAddress;

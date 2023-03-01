@@ -8,7 +8,7 @@ import com.app.pojos.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-	Optional<Customer> findByCustEmailAndCustPassword(String em,String pass);
+	Optional<Customer> findByCustEmail(String em);
 	
 	
 

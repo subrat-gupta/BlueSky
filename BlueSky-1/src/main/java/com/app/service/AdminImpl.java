@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.app.dto.CategoryDto;
@@ -27,6 +28,9 @@ public class AdminImpl implements AdminService{
 	
 	@Autowired
 	private AdminRepository adminRepo;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private ModelMapper mapper;
