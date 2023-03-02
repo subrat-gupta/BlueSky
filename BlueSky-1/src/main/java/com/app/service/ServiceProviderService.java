@@ -14,4 +14,6 @@ public interface ServiceProviderService {
 	ServiceProvider authenticateSp(SpLoginDto logindto);
 	
 	public void addCategoryToServiceProvider(Long serviceProviderId, Long categoryId);
+	
+	public String updateStatusOfBooking(Long bookingId,Long serviceProviderId);
 }

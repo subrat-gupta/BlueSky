@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import com.app.custom_exception.ResourceNotFoundException;
 import com.app.dto.SpLoginDto;
 import com.app.dto.SpRegistrationDto;
+import com.app.pojos.Booking;
 import com.app.pojos.Category;
 import com.app.pojos.ServiceProvider;
+import com.app.repository.BookingRepository;
 import com.app.repository.CategoryRepository;
 import com.app.repository.ServiceProviderRepository;
 
@@ -24,6 +26,9 @@ public class ServiceProviderImpl implements ServiceProviderService{
 	
 	@Autowired
 	private ServiceProviderRepository spRepo;
+	
+	@Autowired
+	private BookingRepository bookRepo;
 	
 	@Autowired
 	private CategoryRepository catRepo;
@@ -81,5 +86,18 @@ public class ServiceProviderImpl implements ServiceProviderService{
         serviceProvider.getCategories().add(category);
         spRepo.save(serviceProvider);
     }
+	
+
+	@Override
+	public String updateStatusOfBooking(Long bookingId,Long serviceProviderId) {
+		
+		Booking b=bookRepo.findById(bookingId).orElseThrow(()->new ResourceNotFoundException("Booking not found"));
+		b.setStatus("Accepted");
+		bookRepo.save(b);
+		ServiceProvider sp1=spRepo.findById(serviceProviderId).orElseThrow(()->new ResourceNotFoundException("Service provider not found"));
+		sp1.setId(serviceProviderId);
+		spRepo.save(sp1);
+		return "Booking accepted and updated status successfully!!!!!!!";
+	}
 
 }
