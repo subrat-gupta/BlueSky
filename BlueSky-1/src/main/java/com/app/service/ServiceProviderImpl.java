@@ -31,6 +31,7 @@ public class ServiceProviderImpl implements ServiceProviderService{
 	private BookingRepository bookRepo;
 	
 	@Autowired
+	
 	private CategoryRepository catRepo;
 	
 	@Autowired

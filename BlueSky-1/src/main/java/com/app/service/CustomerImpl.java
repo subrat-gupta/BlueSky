@@ -94,16 +94,18 @@ public class CustomerImpl implements CustomerService{
         return bookingRepo.save(booking);
     }
 	
-//	public Booking removeBooking(Long customerId,Long serviceId) {
-//		Customer customer=custRepo.findById(customerId)
-//				.orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-//        Services service= serviceRepo.findById(serviceId)
-//				.orElseThrow(()-> new ResourceNotFoundException("Service Not Found"));
-//        Booking booking = new Booking();
-//        booking.setCustdetail(null);
-//        booking.setService_id(null);
-//        return bookingRepo.save(booking);
-//    }
+	public Booking removeBooking(Long customerId,Long serviceId,Long bookingId) {
+		Customer customer=custRepo.findById(customerId)
+				.orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        Services service= serviceRepo.findById(serviceId)
+				.orElseThrow(()-> new ResourceNotFoundException("Service Not Found"));
+        Booking booking = bookingRepo.findById(bookingId)
+				.orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+        booking.setCustdetail(null);
+        booking.setService_id(null);
+        bookingRepo.delete(booking);
+        return booking;
+    }
 
 	@Override
 	public List<Booking> getAllBookingsById(Long customerId) {
@@ -111,6 +113,14 @@ public class CustomerImpl implements CustomerService{
 	    return customer.getBookings();
 //		return null;
 	}
+
+//	@Override
+//	public String cancelBooking(Long CustomerId,Long bookingId) {
+//		custRepo.deleteById(bookingId);
+//		bookingRepo.deleteById(bookingId);
+//		return "Booking deleted successfully!!!";
+//		
+//	}
 
 
 	

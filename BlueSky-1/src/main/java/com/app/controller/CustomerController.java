@@ -68,6 +68,17 @@ public class CustomerController {
         return ResponseEntity.ok().build();
     }
 	
+//	@DeleteMapping("/{customerId}/cancelBooking/{bookingId}")
+//	public String cancelBookingById(@PathVariable Long customerId,@PathVariable Long bookingId) {
+//	
+//		return custService.cancelBooking(customerId,bookingId);
+//	}
 
-	
+
+	@DeleteMapping("/{customerId}/cancelBooking/{serviceId}/{bookingId}")
+	 public ResponseEntity<Void> cancelBooking(@PathVariable Long customerId, @PathVariable Long serviceId,@PathVariable Long bookingId) {
+	        custService.removeBooking(customerId, serviceId, bookingId);
+	        return ResponseEntity.ok().build();
+
+	 }
 }

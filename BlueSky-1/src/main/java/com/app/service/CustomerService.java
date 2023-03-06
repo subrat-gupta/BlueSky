@@ -26,6 +26,10 @@ public interface CustomerService {
 	
 	List<Booking>getAllBookingsById(Long customerId);
 	
+//	String cancelBooking(Long customerId,Long bookingId);
+	
+	Booking removeBooking(Long customerId,Long serviceId,Long bookingId);
+	
 	
 	
 	
