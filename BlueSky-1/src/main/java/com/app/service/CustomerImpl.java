@@ -1,22 +1,18 @@
 package com.app.service;
 
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.app.custom_exception.ResourceNotFoundException;
 import com.app.dto.CustomerLoginDto;
 import com.app.dto.CustomerRegistrationDto;
 import com.app.pojos.Booking;
 import com.app.pojos.Category;
 import com.app.pojos.Customer;
-import com.app.pojos.ServiceProvider;
 import com.app.pojos.Services;
 import com.app.repository.BookingRepository;
 import com.app.repository.CategoryRepository;
@@ -94,16 +90,6 @@ public class CustomerImpl implements CustomerService{
         return bookingRepo.save(booking);
     }
 	
-//	public Booking removeBooking(Long customerId,Long serviceId) {
-//		Customer customer=custRepo.findById(customerId)
-//				.orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-//        Services service= serviceRepo.findById(serviceId)
-//				.orElseThrow(()-> new ResourceNotFoundException("Service Not Found"));
-//        Booking booking = new Booking();
-//        booking.setCustdetail(null);
-//        booking.setService_id(null);
-//        return bookingRepo.save(booking);
-//    }
 
 	@Override
 	public List<Booking> getAllBookingsById(Long customerId) {
@@ -111,6 +97,38 @@ public class CustomerImpl implements CustomerService{
 	    return customer.getBookings();
 //		return null;
 	}
+
+	@Override
+	public List<Services> getAllServicesByCategoryId(Long categoryId) {
+		 return catRepo.findServicesByCategoryId(categoryId);
+
+	}
+	
+//	public Booking removeBooking(Long customerId,Long serviceId,Long bookingId) {
+//	
+//        Booking booking = bookingRepo.findById(bookingId)
+//				.orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+//        booking.setCustdetail(null);
+//        booking.setService_id(null);
+//        bookingRepo.delete(booking);
+//        return booking;
+//    }
+	
+	@Override
+	public String cancelBooking(Long bookingId) {
+		
+		Booking b=bookingRepo.findById(bookingId).orElseThrow(()->new ResourceNotFoundException("Booking not found"));
+		b.setStatus("Cancelled");
+		
+		bookingRepo.save(b);
+//		ServiceProvider sp1=spRepo.findById(serviceProviderId).orElseThrow(()->new ResourceNotFoundException("Service provider not found"));
+//		b.setBookingList(sp1);
+//		sp1.setId(serviceProviderId);
+//		spRepo.save(sp1);
+		return "Booking cancelled!!!!!!!";
+	}
+
+	
 
 
 	

@@ -4,16 +4,13 @@ package com.app.service;
 
 import java.util.List;
 
+import com.app.dto.AdminLoginDto;
+import com.app.dto.AdminRegistrationDto;
 import com.app.dto.CategoryDto;
-import com.app.dto.CustomerLoginDto;
-import com.app.dto.CustomerRegistrationDto;
 import com.app.dto.ServicesDto;
-import com.app.dto.SpLoginDto;
-import com.app.dto.SpRegistrationDto;
 import com.app.pojos.Admin;
+import com.app.pojos.Booking;
 import com.app.pojos.Category;
-import com.app.pojos.Customer;
-import com.app.pojos.ServiceProvider;
 import com.app.pojos.Services;
 
 public interface AdminService {
@@ -31,6 +28,9 @@ public interface AdminService {
 //
 //	ServiceProvider authenticateSp(SpLoginDto logindto);
 	
+	Admin addAdminDetails(AdminRegistrationDto transientAdmindto);
+	Admin authenticateAdmin(AdminLoginDto logindto);
+	
 	String deleteCustomer(Long customerId);
 
 	String deleteServiceProvider(Long serviceId);
@@ -38,4 +38,6 @@ public interface AdminService {
 	Services addServiceDetails(ServicesDto serDto);
 	
 	public void addServicesToCategory(Long categoryId, Long serviceId);
+	
+	List<Booking>getAllBookings();
 }

@@ -13,19 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dto.AdminLoginDto;
+import com.app.dto.AdminRegistrationDto;
 import com.app.dto.CategoryDto;
-import com.app.dto.BookingDto;
-import com.app.dto.CustomerLoginDto;
-import com.app.dto.CustomerRegistrationDto;
 import com.app.dto.ServicesDto;
 import com.app.pojos.Admin;
 import com.app.pojos.Booking;
 import com.app.pojos.Category;
-import com.app.pojos.Customer;
 import com.app.pojos.Services;
 import com.app.service.AdminService;
 import com.app.service.CustomerService;
-import com.app.service.ServiceProviderService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -38,16 +35,17 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
-//
-//	@PostMapping
-//	public Customer registerdetails(@RequestBody CustomerRegistrationDto transientcustomerdto) {
-//		return custService.addCustomerDetails(transientcustomerdto);
-//	}
-//	
-//	@PostMapping("/login")
-//	public Customer loginAuthentication(@RequestBody CustomerLoginDto logindto) {
-//		return custService.authenticateCust(logindto);
-//	}
+
+
+	@PostMapping
+	public Admin registerdetails(@RequestBody AdminRegistrationDto transientcustomerdto) {
+		return adminService.addAdminDetails(transientcustomerdto);
+	}
+	
+	@PostMapping("/login")
+	public Admin loginAuthentication(@RequestBody AdminLoginDto logindto) {
+		return adminService.authenticateAdmin(logindto);
+	}
 	
 	@GetMapping("/category")
 	public List<Category>getAllCategory(){
@@ -82,6 +80,13 @@ public class AdminController {
 	        return ResponseEntity.ok().build();
 	    }
 	 
+	 @GetMapping("/bookings")
+		public List<Booking> getAllBookings() {
+			 return adminService.getAllBookings();
+//		    Customer customer = custRepo.findById(customerId).orElseThrow();
+//		    return customer.getBookings();
+		    
+		}
 
 	
 }

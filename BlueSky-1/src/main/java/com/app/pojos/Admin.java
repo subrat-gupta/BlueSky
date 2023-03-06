@@ -29,7 +29,7 @@ public class Admin extends BaseEntity {
 	private String adminLastName;
 	@Column(length = 50, unique = true)
 	private String adminEmail;
-	@Column(length = 20, nullable = false)
+	@Column(length = 200, nullable = false)
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String adminPassword;
 	@Column(length = 10, unique = true)

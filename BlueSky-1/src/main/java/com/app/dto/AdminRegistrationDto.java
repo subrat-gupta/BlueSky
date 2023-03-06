@@ -20,6 +20,6 @@ public class AdminRegistrationDto{
 	private String adminLastName;
 	private String adminEmail;
 	private String adminPassword;
-	private Long AdminMobNumber;
+	private Long adminMobNumber;
 	
 }

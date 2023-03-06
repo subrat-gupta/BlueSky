@@ -1,11 +1,12 @@
 package com.app.service;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -67,15 +68,6 @@ public class ServiceProviderImpl implements ServiceProviderService{
 		//return spRepo.findBySpEmailAndSpPassword(sp1.getSpEmail(),sp1.getSpPassword()).orElseThrow(()-> new ResourceNotFoundException("Bad Credentials!!!"));
 	}
 	
-//	public Map<String,Object>assignCategoryid(String name,CategoryDto catdto){
-//		Category category= catRepo.findByCatName(name);
-//		category.getId();
-//		
-//		
-//		
-//		
-//		return null;
-//	}
 
 	@Override
 	public void addCategoryToServiceProvider(Long serviceProviderId, Long categoryId) {
@@ -93,11 +85,21 @@ public class ServiceProviderImpl implements ServiceProviderService{
 		
 		Booking b=bookRepo.findById(bookingId).orElseThrow(()->new ResourceNotFoundException("Booking not found"));
 		b.setStatus("Accepted");
-		bookRepo.save(b);
 		ServiceProvider sp1=spRepo.findById(serviceProviderId).orElseThrow(()->new ResourceNotFoundException("Service provider not found"));
-		sp1.setId(serviceProviderId);
-		spRepo.save(sp1);
+		b.setBookingList(sp1);;
+		bookRepo.save(b);
+
+//		sp1.setId(serviceProviderId);
+//		spRepo.save(sp1);
 		return "Booking accepted and updated status successfully!!!!!!!";
 	}
+
+	@Override
+	public List<Booking> getAllBookingsById(Long spId) {
+		ServiceProvider sp = spRepo.findById(spId).orElseThrow(() -> new ResourceNotFoundException("sp not found"));
+	    return sp.getBookinglist();
+		
+	}
+	
 
 }

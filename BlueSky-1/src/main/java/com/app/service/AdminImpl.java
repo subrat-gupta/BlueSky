@@ -1,5 +1,7 @@
 package com.app.service;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
@@ -9,13 +11,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.app.custom_exception.ResourceNotFoundException;
+import com.app.dto.AdminLoginDto;
+import com.app.dto.AdminRegistrationDto;
 import com.app.dto.CategoryDto;
 import com.app.dto.ServicesDto;
 import com.app.pojos.Admin;
+import com.app.pojos.Booking;
 import com.app.pojos.Category;
-import com.app.pojos.ServiceProvider;
 import com.app.pojos.Services;
 import com.app.repository.AdminRepository;
+import com.app.repository.BookingRepository;
 import com.app.repository.CategoryRepository;
 import com.app.repository.CustomerRepository;
 import com.app.repository.ServiceProviderRepository;
@@ -31,7 +36,8 @@ public class AdminImpl implements AdminService{
 	
 	@Autowired
 	private CategoryRepository catRepo;
-	
+	@Autowired
+	private BookingRepository bookingRepo;
 	@Autowired
 	private AdminRepository adminRepo;
 	
@@ -81,25 +87,7 @@ public class AdminImpl implements AdminService{
 		return servRepo.save(service);
 		
 	}
-//	@Override
-//	public Customer addCustomerDetails(CustomerRegistrationDto transientCustomerdto) {
-//		
-//		Customer cx= mapper.map(transientCustomerdto, Customer.class);
-//		
-//		return custRepo.save(cx);
-//	}
-//
-//	@Override
-//	public Customer authenticateCust(CustomerLoginDto logindto) {
-//		Customer cx1= mapper.map(logindto, Customer.class);
-//		return custRepo.findByCustEmailAndCustPassword(cx1.getCustEmail(),cx1.getCustPassword()).orElseThrow(()-> new ResourceNotFoundException("Bad Credentials!!!"));
-//	}
-//
-//	@Override
-//	public List<Category> getAllCategoryDetails() {
-//		
-//		return catRepo.findAll();
-//	}
+
 	
 	@Override
 	public void addServicesToCategory(Long categoryId, Long serviceId) {
@@ -111,6 +99,34 @@ public class AdminImpl implements AdminService{
         category.getCat_services().add(service);
         catRepo.save(category);
     }
+
+@Override
+public List<Booking> getAllBookings() {
+	 
+	    return  bookingRepo.findAll();
+}
+
+@Override
+public Admin authenticateAdmin(AdminLoginDto logindto) {
+	Admin admin=adminRepo.findByAdminEmail(logindto.getAdminEmail()).orElseThrow(()-> new ResourceNotFoundException("Bad Credentials!!!"));
+	
+	String rawPassword=logindto.getAdminPassword();
+	if(admin!=null && passwordEncoder.matches(rawPassword, admin.getAdminPassword()))
+			return admin;
+	else throw new ResourceNotFoundException("Wrong Email or Password");
+
+}
+
+@Override
+public Admin addAdminDetails(AdminRegistrationDto transientAdmindto) {
+	
+	String encPassword = passwordEncoder.encode(transientAdmindto.getAdminPassword());
+	transientAdmindto.setAdminPassword(encPassword);
+	
+	Admin admin= mapper.map(transientAdmindto, Admin.class);
+	return adminRepo.save(admin);
+}
+	
 	
 	
 
