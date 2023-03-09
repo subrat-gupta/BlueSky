@@ -1,8 +1,11 @@
 package com.app.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -23,6 +26,7 @@ import com.app.pojos.Customer;
 import com.app.pojos.Services;
 
 import com.app.service.CustomerService;
+import com.app.service.ImageHandlingService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -32,6 +36,8 @@ public class CustomerController {
 	@Autowired
 	private CustomerService custService;
 	
+	@Autowired
+	private ImageHandlingService imageService;
 
 	@PostMapping
 	public Customer registerdetails(@RequestBody CustomerRegistrationDto transientcustomerdto) {
@@ -80,4 +86,14 @@ public class CustomerController {
 			return "Booking cancelled!!!!!!!";
 
 	 }
+	
+	
+	@GetMapping(value = "/{catId}/image", produces = { MediaType.IMAGE_GIF_VALUE, 
+ 			MediaType.IMAGE_JPEG_VALUE,
+ 			MediaType.IMAGE_PNG_VALUE })
+ 	public ResponseEntity<?> serveImageFromServerSideFolder(@PathVariable Long catId) throws IOException {
+ 		System.out.println("in serve img " + catId);
+ 		return new ResponseEntity<>(imageService.serveImage(catId), HttpStatus.OK);
+ 	}
+	
 }

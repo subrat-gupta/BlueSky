@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.io.IOException;
 import java.util.List;
 import com.app.dto.CustomerLoginDto;
 import com.app.dto.CustomerRegistrationDto;
@@ -25,5 +26,6 @@ public interface CustomerService {
 //	Booking removeBooking(Long customerId, Long serviceId, Long bookingId);
 	
 	String cancelBooking(Long bookingId);
+	
 
 }

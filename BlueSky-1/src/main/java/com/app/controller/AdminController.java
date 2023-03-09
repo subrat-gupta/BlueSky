@@ -1,8 +1,10 @@
 package com.app.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dto.AdminLoginDto;
 import com.app.dto.AdminRegistrationDto;
@@ -23,6 +27,7 @@ import com.app.pojos.Category;
 import com.app.pojos.Services;
 import com.app.service.AdminService;
 import com.app.service.CustomerService;
+import com.app.service.ImageHandlingService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -34,6 +39,9 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	private ImageHandlingService imageService;
 
 
 
@@ -87,6 +95,14 @@ public class AdminController {
 //		    return customer.getBookings();
 		    
 		}
+	 
+		@PostMapping(value="/{catId}/image_upload", consumes = "multipart/form-data")
+		public ResponseEntity<?> uploadImageToServerSideFolder(@PathVariable Long catId,
+				@RequestParam MultipartFile imageFile) throws IOException{
+			System.out.println("in upload img " + catId + " " + imageFile.getOriginalFilename());
+			return new ResponseEntity<>(imageService.uploadImage(catId, imageFile), HttpStatus.CREATED);
+		}
+
 
 	
 }

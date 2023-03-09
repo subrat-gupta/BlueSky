@@ -28,6 +28,8 @@ public class Category extends BaseEntity{
 	@Column(length = 20, unique = true)
 	private String catName;   
 
+	@Column(length = 300)
+	private String cat_image;
 	
 	
 	@ManyToMany(fetch = FetchType.EAGER)
