@@ -100,6 +100,12 @@ public class ServiceProviderImpl implements ServiceProviderService{
 	    return sp.getBookinglist();
 		
 	}
+
+	@Override
+	public List<Booking> getAllBookings() {
+		return  bookRepo.findAll();
+	}
+	
 	
 
 }

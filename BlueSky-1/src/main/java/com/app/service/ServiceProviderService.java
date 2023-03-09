@@ -21,4 +21,6 @@ public interface ServiceProviderService {
 	public String updateStatusOfBooking(Long bookingId,Long serviceProviderId);
 	
 	List<Booking> getAllBookingsById(Long spId);
+	
+	List<Booking>getAllBookings();
 }

@@ -32,7 +32,7 @@ public class ServiceProviderController {
 	public List<Booking> getBookingsForSp(@PathVariable Long spId) {
 		 return spService.getAllBookingsById(spId);
 	}
-
+	
 	@PostMapping
 	public ServiceProvider registerdetails(@RequestBody SpRegistrationDto transientproviderdto) {
 		return spService.addProviderDetails(transientproviderdto);
@@ -57,4 +57,9 @@ public class ServiceProviderController {
 			return "Booking accepted and updated status successfully!!!!!!!";
 
 	 }
+	 @GetMapping("/bookings")
+		public List<Booking> getAllBookings() {
+			 return spService.getAllBookings();
+		    
+		}
 }
