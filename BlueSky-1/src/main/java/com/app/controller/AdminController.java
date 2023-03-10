@@ -24,6 +24,8 @@ import com.app.dto.ServicesDto;
 import com.app.pojos.Admin;
 import com.app.pojos.Booking;
 import com.app.pojos.Category;
+import com.app.pojos.Customer;
+import com.app.pojos.ServiceProvider;
 import com.app.pojos.Services;
 import com.app.service.AdminService;
 import com.app.service.CustomerService;
@@ -102,6 +104,16 @@ public class AdminController {
 			System.out.println("in upload img " + catId + " " + imageFile.getOriginalFilename());
 			return new ResponseEntity<>(imageService.uploadImage(catId, imageFile), HttpStatus.CREATED);
 		}
+		
+		 @GetMapping("/customers")
+			public List<Customer> getAllCustomers() {
+				 return adminService.getAllCustomers();
+		 }
+				 
+				 @GetMapping("/serviceproviders")
+					public List<ServiceProvider> getAllservice_providers() {
+						 return adminService.getAllservice_providers();
+				 }
 
 
 	

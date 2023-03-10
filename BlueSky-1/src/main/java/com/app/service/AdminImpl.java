@@ -18,6 +18,8 @@ import com.app.dto.ServicesDto;
 import com.app.pojos.Admin;
 import com.app.pojos.Booking;
 import com.app.pojos.Category;
+import com.app.pojos.Customer;
+import com.app.pojos.ServiceProvider;
 import com.app.pojos.Services;
 import com.app.repository.AdminRepository;
 import com.app.repository.BookingRepository;
@@ -125,6 +127,18 @@ public Admin addAdminDetails(AdminRegistrationDto transientAdmindto) {
 	
 	Admin admin= mapper.map(transientAdmindto, Admin.class);
 	return adminRepo.save(admin);
+}
+
+@Override
+public List<Customer> getAllCustomers() {
+	
+	 return  custRepo.findAll();
+}
+
+@Override
+public List<ServiceProvider> getAllservice_providers() {
+	
+	 return  spRepo.findAll();
 }
 	
 	

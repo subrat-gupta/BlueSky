@@ -11,6 +11,8 @@ import com.app.dto.ServicesDto;
 import com.app.pojos.Admin;
 import com.app.pojos.Booking;
 import com.app.pojos.Category;
+import com.app.pojos.Customer;
+import com.app.pojos.ServiceProvider;
 import com.app.pojos.Services;
 
 public interface AdminService {
@@ -40,4 +42,8 @@ public interface AdminService {
 	public void addServicesToCategory(Long categoryId, Long serviceId);
 	
 	List<Booking>getAllBookings();
+	
+	List<Customer>getAllCustomers();
+	
+	List<ServiceProvider>getAllservice_providers();
 }

@@ -66,7 +66,7 @@ public class CustomerController {
 
 	
 	@PostMapping("/{customerId}/categories/{serviceId}")
-    public ResponseEntity<Void> addCustomerBooking(@PathVariable Long customerId, @PathVariable Long serviceId) {
+    public ResponseEntity<Booking> addCustomerBooking(@PathVariable Long customerId, @PathVariable Long serviceId) {
         custService.addBooking(customerId, serviceId);
         return ResponseEntity.ok().build();
     }
